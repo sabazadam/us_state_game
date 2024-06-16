@@ -14,17 +14,29 @@ turtle.hideturtle()
 data = pandas.read_csv("50_states.csv")
 all_states = data.state.values
 
-print(data[data.state == "Connecticut"])
+correct_answer_list = []
+correct_answer = 0
 while True:
-    answer_state = screen.textinput(title="Guess The State",prompt="What's another state's name?")
+    answer_state = screen.textinput(f" {correct_answer}/50 States Correct"
+                                    ,prompt="What's another state's name?").title()
+    if answer_state == "Exit": break
     if answer_state in all_states:
-
-        state = data[data.state == answer_state]
-        x = state.values[0][1]
-        y = state.values[0][2]
+        if answer_state in correct_answer_list: continue
+        state = data[data.state == answer_state].values[0]
+        x = state[1]
+        y = state[2]
         turtle.goto(x,y)
         turtle.write(answer_state)
+        correct_answer_list.append(state[0])
+        correct_answer += 1
 
 
+for state in all_states:
+    if state in correct_answer_list: continue
+    my_state = data[data.state == state].values[0]
+    x = my_state[1]
+    y = my_state[2]
+    turtle.goto(x,y)
+    turtle.write(my_state[0])
 
-
+screen.exitonclick()
